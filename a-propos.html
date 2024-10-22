@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistant Virtuel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #2596be;
+            --secondary-color: rgba(37, 150, 190, 0.5);
+            --background-color: rgba(0, 0, 0, 0.7);
+            --white: #ffffff;
+            --box-shadow: rgba(0, 0, 0, 0.3);
+            --font-family: 'Montserrat', sans-serif;
+            --border-radius: 10px;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-family);
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            background-image: url("ressources/a.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--white);
+            animation: fadeIn 1s ease-in-out, slideUp 1s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); }
+            to { transform: translateY(0); }
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: var(--background-color);
+            box-shadow: 0 2px 4px var(--box-shadow);
+        }
+
+        nav ul li {
+            display: inline-block;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 15px 25px;
+            color: var(--white);
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .faq-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+            animation: fadeIn 1.5s ease-in-out, slideUp 1.5s ease-in-out;
+        }
+
+        .faq-container h2 {
+            font-size: 2.5em;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            margin-bottom: 30px;
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .faq-container h2:hover {
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        .faq {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 20px var(--box-shadow);
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 800px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out forwards, slideUp 1.5s ease-in-out forwards;
+        }
+
+        .faq:nth-child(2) {
+            animation-delay: 0.3s;
+        }
+
+        .faq:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .faq:nth-child(4) {
+            animation-delay: 0.9s;
+        }
+
+        .faq:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .faq-question {
+            cursor: pointer;
+            padding: 10px;
+            color: var(--white);
+            border-bottom: 1px solid #ccc;
+            font-size: 1.2em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s;
+        }
+
+        .faq.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 10px;
+            color: var(--white);
+        }
+
+        .faq.active .faq-answer {
+            padding: 10px;
+            max-height: 500px;
+        }
+
+        .contact-info {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 20px var(--box-shadow);
+            margin-bottom: 20px;
+            width: 80%;
+            max-width: 800px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .contact-info h2 {
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+
+        .contact-info p {
+            margin-bottom: 5px;
+            color: var(--white);
+        }
+
+        .contact-info i {
+            margin-right: 5px;
+            color: #ffcc00;
+        }
+
+        footer {
+            background-color: var(--background-color);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+            animation: fadeIn 1.5s ease-in-out, slideUp 1.5s ease-in-out;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            transition: opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .modal.display-block {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 25px;
+            border: none;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            animation: zoomIn 0.5s;
+            color: #000;
+            text-align: center;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        .modal.display-block .modal-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+       .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+            cursor: pointer;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 18px;
+            max-width: 200px;
+            text-align: left;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 425px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+            font-size: 16px;
+        }
+
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+		
+		  /* Change la couleur des icônes */
+        .contact-info i {
+            margin-right: 5px;
+            color: #ffcc00;
+        }
+		
+		  /* Animation pour le titre "Contactez-nous" */
+        .contact-form h2 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .contact-form h2:hover {
+            color: var(--white);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+
+        .contact-form button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 0;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #1b6e8e;
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: none;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50%;
+            box-shadow: 0 4px 6px var(--box-shadow);
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .back-to-top:hover {
+            background-color: #1b6e8e;
+            transform: translateY(-3px);
+        }
+
+        .newsletter {
+            text-align: center;
+            margin: 50px 0;
+        }
+
+        .newsletter input[type="email"] {
+            width: 300px;
+            padding: 10px;
+            margin-right: 10px;
+            border: 2px solid #ccc;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .newsletter input[type="email"]:focus {
+            border-color: var(--primary-color);
+        }
+
+        .newsletter button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter button:hover {
+            background-color: #1b6e8e;
+        }
+
+        @media (max-width: 768px) {
+            .faq,
+            .contact-info,
+            .contact-form input[type="text"],
+            .contact-form input[type="email"],
+            .contact-form textarea {
+                width: 100%;
+            }
+
+            .contact-form label {
+                max-width: 100%;
+            }
+
+            .newsletter input[type="email"] {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+
+        .contact-form h2 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .contact-form h2:hover {
+            color: var(--white);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        /* Styles pour la modal de confirmation */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            transition: opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .confirmation-modal.display-block {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .confirmation-modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 25px;
+            border: none;
+            width: 80%;
+            max-width: 450px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            animation: zoomIn 0.5s;
+            text-align: center;
+            color: #000;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        .confirmation-modal.display-block .confirmation-modal-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .close-confirmation-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .close-confirmation-btn:hover,
+        .close-confirmation-btn:focus {
+            color: #333;
+            cursor: pointer;
+        }
+
+        .confirmation-modal-content h2 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .confirmation-modal-content p {
+            margin-bottom: 20px;
+        }
+
+        .confirmation-modal-content button {
+            padding: 10px 20px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .confirmation-modal-content button:hover {
+            background-color: #1b6e8e;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+        <li><a href="nos-offres.html"><i class="fas fa-box"></i> Nos Offres</a></li>
+        <li><a href="a-propos.html"><i class="fas fa-info-circle"></i> À propos</a></li>
+        <li><a href="#" onclick="openContactModal()"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+</nav>
+
+<main>
+    <div class="faq-container">
+        <h2>Foire aux questions (FAQ)</h2>
+        <div class="faq">
+            <div class="faq-question">
+                <h3>Comment puis-je utiliser vos services d'automatisation?</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Vous pouvez débuter avec nos services en nous contactant directement via notre page de contact ou en consultant les informations détaillées disponibles sur notre site.</p>
+            </div>
+        </div>
+        <div class="faq">
+            <div class="faq-question">
+                <h3>Quels types de paiement acceptez-vous?</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Nous acceptons plusieurs modes de paiement, y compris les cartes de crédit, les virements bancaires et les paiements en ligne via PayPal.</p>
+            </div>
+        </div>
+        <div class="faq">
+            <div class="faq-question">
+                <h3>Comment sécurisez-vous les données des clients?</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Nous utilisons des protocoles de sécurité de pointe pour assurer la confidentialité et l'intégrité des données de nos clients, incluant le chiffrement SSL/TLS.</p>
+            </div>
+        </div>
+        <div class="faq">
+            <div class="faq-question">
+                <h3>Y a-t-il des formations disponibles pour apprendre à utiliser vos services?</h3>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Oui, nous offrons des formations en ligne et des tutoriels pour aider nos clients à mieux comprendre et utiliser nos services efficacement.</p>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h2>Nos coordonnées</h2>
+            <p><i class="fas fa-map-marker-alt" style="color: #B40431;"></i> Adresse: 6 rue Eugène Joly, 42100 Saint-Étienne</p>
+            <p><i class="fas fa-phone" style="color: #B40431;"></i> Téléphone: 06 58 23 32 13</p>
+            <p><i class="fas fa-envelope" style="color: #B40431;"></i> Email: dylanguion@outlook.fr</p>
+        </div>
+
+        <div class="newsletter">
+            <h2>Abonnez-vous à notre newsletter</h2>
+            <form action="https://formspree.io/f/xldrdypy" method="post" id="newsletter-form" name="newsletter-form">
+                <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Votre email" required>
+                <button type="submit" name="subscribe" id="mc-embedded-subscribe">Abonnez-vous</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeContactModal()">&times;</span>
+        <section class="contact-form">
+            <h2>Contactez-nous</h2>
+            <form id="contactForm">
+                <label>Votre nom:<input type="text" name="name" required></label>
+                <label>Votre email:<input type="email" name="email" required></label>
+                <label>Sujet:<input type="text" name="subject" required></label>
+                <label>Votre message:<textarea name="message" required></textarea></label>
+                <button id="sendButton" type="submit">Envoyer</button>
+            </form>
+        </section>
+        <div id="messageConfirmation" style="display:none; color: green;">
+            Votre message a été envoyé avec succès!
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmation pour la newsletter -->
+<div id="confirmationModal" class="confirmation-modal">
+    <div class="confirmation-modal-content">
+        <span class="close-confirmation-btn" onclick="closeConfirmationModal()">&times;</span>
+        <h2>Merci pour votre abonnement !</h2>
+        <p>Vous avez été abonné à notre newsletter avec succès. Nous vous tiendrons informé des dernières nouveautés.</p>
+        <button onclick="closeConfirmationModal()">Fermer</button>
+    </div>
+</div>
+
+<footer>
+    &copy; 2024 Astral Connect | Tous droits réservés | <a href="#" style="color: var(--primary-color); text-decoration: none;">Politique de confidentialité</a>
+</footer>
+
+<button class="back-to-top" onclick="scrollToTop()"><i class="fas fa-arrow-up"></i></button>
+
+<script>
+    function openContactModal() {
+        const contactModal = document.getElementById('contactModal');
+        contactModal.style.display = 'block';
+        setTimeout(function() {
+            contactModal.classList.add('display-block');
+        }, 50);
+    }
+
+    function closeContactModal() {
+        const contactModal = document.getElementById('contactModal');
+        contactModal.classList.remove('display-block');
+        setTimeout(function() {
+            contactModal.style.display = 'none';
+        }, 300);
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        const form = document.getElementById('contactForm');
+        const formData = new FormData(form);
+
+        fetch('https://formspree.io/f/xleqagkd', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('messageConfirmation').style.display = 'block';
+                form.reset();
+            } else {
+                response.json().then(data => {
+                    throw new Error(data.error);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'envoi:', error);
+            alert('Erreur lors de l\'envoi du formulaire.');
+        });
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', submitForm);
+
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', function() {
+            const currentlyActiveFaq = document.querySelector('.faq.active');
+            const nextAnswer = this.nextElementSibling;
+
+            if (currentlyActiveFaq && currentlyActiveFaq !== this.parentElement) {
+                currentlyActiveFaq.classList.remove('active');
+                currentlyActiveFaq.querySelector('.faq-answer').style.maxHeight = '0';
+                currentlyActiveFaq.querySelector('.faq-answer').style.padding = '0 10px';
+            }
+
+            if (!this.parentElement.classList.contains('active')) {
+                this.parentElement.classList.add('active');
+                nextAnswer.style.maxHeight = nextAnswer.scrollHeight + "px";
+            } else {
+                this.parentElement.classList.remove('active');
+                nextAnswer.style.maxHeight = '0';
+                nextAnswer.style.padding = '0 10px';
+            }
+        });
+    });
+
+    // Bouton de retour en haut
+    const backToTopButton = document.querySelector('.back-to-top');
+
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeConfirmationModal() {
+        const confirmationModal = document.getElementById('confirmationModal');
+        confirmationModal.classList.remove('display-block');
+        setTimeout(function() {
+            confirmationModal.style.display = 'none';
+        }, 300);
+    }
+
+    document.getElementById('newsletter-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = event.target;
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: form.method,
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                const confirmationModal = document.getElementById('confirmationModal');
+                confirmationModal.style.display = 'block';
+                setTimeout(function() {
+                    confirmationModal.classList.add('display-block');
+                }, 50);
+                form.reset();
+            } else {
+                response.json().then(data => {
+                    if (Object.hasOwn(data, 'errors')) {
+                        alert(data["errors"].map(error => error["message"]).join(", "));
+                    } else {
+                        alert('Erreur lors de l\'envoi du formulaire.');
+                    }
+                });
+            }
+        })
+        .catch(error => {
+            alert('Erreur lors de l\'envoi du formulaire.');
+        });
+    });
+</script>
+
+</body>
+</html>

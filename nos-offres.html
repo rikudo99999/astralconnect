@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offres de Service - Assistant Virtuel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+
+        :root {
+            --primary-color: #2596be;
+            --secondary-color: rgba(37, 150, 190, 0.5);
+            --background-color: rgba(0, 0, 0, 0.7);
+            --white: #ffffff;
+            --box-shadow: rgba(0, 0, 0, 0.3);
+            --font-family: 'Montserrat', sans-serif;
+            --border-radius: 10px;
+            --stat-icon-color: #82D2FF; /* Nouvelle couleur des icônes */
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 40px, 0);
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0);
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale3d(0.3, 0.3, 0.3);
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes parallax {
+            0% { background-position: 0 0; }
+            100% { background-position: 100% 100%; }
+        }
+
+        body {
+            background-image: url("ressources/a.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            animation: parallax 15s infinite linear;
+            color: var(--white);
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 999;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 15px 25px;
+            color: var(--white);
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+
+        .container {
+            flex: 1;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 10px;
+            animation: fadeInUp 1s ease-in-out;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            font-family: 'Georgia', serif;
+            color: var(--white);
+            text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .offre-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            overflow: visible;
+            flex-wrap: wrap;
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        .offre {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 6px 6px rgba(0, 0, 0, 0.2);
+            width: 400px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            z-index: 2;
+            animation: fadeInUp 1.5s ease-in-out;
+            color: var(--white);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .offre:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .offre h3 {
+            font-size: 28px;
+            color: #ffd700;
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .offre:hover h3 {
+            color: #ffcc00;
+        }
+
+        .offre ul {
+            list-style: none;
+            padding: 0;
+            margin: 10px 0 20px;
+            color: var(--white);
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            line-height: 1.6;
+            transition: color 0.3s;
+        }
+
+        .offre ul li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 10px;
+        }
+
+        .offre ul li:before {
+            content: "\2022";
+            position: absolute;
+            left: 0;
+            color: #ffd700;
+            font-size: 14px;
+            line-height: 1;
+        }
+
+        .price {
+            color: var(--white);
+            font-weight: bold;
+            font-size: 28px;
+            text-align: center;
+            margin-top: auto;
+            transition: color 0.3s;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .offre:hover .price {
+            color: #ffcc00;
+        }
+
+        .info-link {
+            display: inline-block;
+            text-align: center;
+            margin-top: 15px;
+            padding: 12px 25px;
+            background-color: var(--primary-color);
+            color: var(--white);
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            cursor: pointer;
+        }
+
+        .info-link:hover, .info-link:focus {
+            background-color: #1b6e8e;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+        }
+
+        .info-link i {
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        footer {
+            background-color: var(--background-color);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            width: 100%;
+            animation: fadeInUp 2s ease-in-out;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            transition: opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .modal.display-block {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 25px;
+            border: none;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            animation: zoomIn 0.5s;
+            color: #000;
+            text-align: center;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        .modal.display-block .modal-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+            cursor: pointer;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 18px;
+            max-width: 200px;
+            text-align: left;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 425px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+            font-size: 16px;
+        }
+
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .contact-form button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 0;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #1b6e8e;
+        }
+
+        .contact-info i {
+            margin-right: 5px;
+            color: #ffcc00;
+        }
+
+        .badge {
+            background-color: #333;
+            color: var(--white);
+            padding: 10px 20px;
+            border-radius: 20px;
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            z-index: 3;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+        }
+
+        .badge i {
+            margin-right: 5px;
+        }
+
+        .badge-or {
+            background: linear-gradient(135deg, #ffd700, #ffb400);
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)), linear-gradient(135deg, #ffd700, #ffb400);
+        }
+
+        .badge-argent {
+            background: linear-gradient(135deg, #c0c0c0, #a0a0a0);
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)), linear-gradient(135deg, #c0c0c0, #a0a0a0);
+        }
+
+        .badge-bronze {
+            background: linear-gradient(135deg, #cd7f32, #b87333);
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0)), linear-gradient(135deg, #cd7f32, #b87333);
+        }
+
+        .contact-form h2 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .contact-form h2:hover {
+            color: var(--white);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .offre {
+                width: 100%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+
+            .contact-form input[type="text"],
+            .contact-form input[type="email"],
+            .contact-form textarea {
+                width: 100%;
+            }
+
+            .contact-form label {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .section-title h2 {
+                font-size: 32px;
+            }
+
+            .offre h3 {
+                font-size: 24px;
+            }
+
+            .price {
+                font-size: 24px;
+            }
+
+            .info-link {
+                padding: 10px 20px;
+            }
+        }
+
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 50px 0;
+            padding: 20px;
+            background: rgba(37, 150, 190, 0.3);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            color: var(--white);
+            text-align: center;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        .stat {
+            flex: 1;
+            min-width: 200px;
+            margin: 10px;
+            animation: fadeInUp 2s ease-in-out;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            background: rgba(37, 150, 190, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 25px rgba(0,0,0,0.4);
+        }
+
+        .stat h3 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            color: #6ab04c;
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat p {
+            font-size: 24px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .stat i {
+            font-size: 48px;
+            margin-bottom: 10px;
+            color: var(--stat-icon-color); /* Utilise la couleur définie dans la variable */
+            transition: color 0.3s;
+        }
+
+        .stat:hover i {
+            color: #5a9f34; /* Légère variation de la couleur au survol */
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <ul>
+        <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+        <li><a href="nos-offres.html"><i class="fas fa-box"></i> Nos Offres</a></li>
+        <li><a href="a-propos.html"><i class="fas fa-info-circle"></i> À propos</a></li>
+        <li><a href="#" onclick="openContactModal()"><i class="fas fa-envelope"></i> Contact</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="section-title">
+        <h2>Nos Offres de Service</h2>
+    </div>
+    <section id="offres" class="section">
+        <div class="offre-container">
+            <div class="offre">
+                <span class="badge badge-or"><i class="fas fa-crown"></i> Offre Premium</span>
+                <h3>Forfait Sérénité</h3>
+                <ul>
+                    <li>30h/mois et +</li>
+                    <li>Design responsive et moderne</li>
+                    <li>Optimisation SEO</li>
+                    <li>Support technique continu</li>
+                    <li>Intégration de fonctionnalités avancées</li>
+                    <li>Formation à la gestion du site</li>
+                </ul>
+                <p class="price">À partir de 37€/h T.T.C</p>
+                <a href="#" class="info-link" onclick="openContactModal()">
+                    <i class="fas fa-info-circle"></i> Pour plus d'informations
+                </a>
+            </div>
+            <div class="offre">
+                <span class="badge badge-argent"><i class="fas fa-thumbs-up"></i> Recommandée</span>
+                <h3>Forfait Confort</h3>
+                <ul>
+                    <li>15h/mois</li>
+                    <li>Intégration sur plateformes multiples</li>
+                    <li>Support client 24/7</li>
+                    <li>Analyse des interactions utilisateur</li>
+                    <li>Intégration de chatbots dans les applications</li>
+                </ul>
+                <p class="price">À partir de 38€/h T.T.C</p>
+                <a href="#" class="info-link" onclick="openContactModal()">
+                    <i class="fas fa-info-circle"></i> Pour plus d'informations
+                </a>
+            </div>
+            <div class="offre">
+                <span class="badge badge-bronze"><i class="fas fa-shield-alt"></i> Tranquillité</span>
+                <h3>Besoin Ponctuel</h3>
+                <ul>
+                    <li>Audits de sécurité</li>
+                    <li>Installation de pare-feu et antivirus</li>
+                    <li>Formations en sécurité pour les employés</li>
+                    <li>Surveillance des menaces en temps réel</li>
+                    <li>Assistance en cas de cyberattaque</li>
+                </ul>
+                <p class="price">À partir de 40€/h T.T.C</p>
+                <a href="#" class="info-link" onclick="openContactModal()">
+                    <i class="fas fa-info-circle"></i> Pour plus d'informations
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-container">
+        <div class="stat">
+            <i class="fas fa-smile"></i>
+            <h3>200+</h3>
+            <p>Clients Satisfaits</p>
+        </div>
+        <div class="stat">
+            <i class="fas fa-tasks"></i>
+            <h3>150+</h3>
+            <p>Projets Complétés</p>
+        </div>
+        <div class="stat">
+            <i class="fas fa-clock"></i>
+            <h3>3000+</h3>
+            <p>Heures de Support</p>
+        </div>
+        <div class="stat">
+            <i class="fas fa-star"></i>
+            <h3>100%</h3>
+            <p>Satisfaction Garantie</p>
+        </div>
+    </section>
+</div>
+
+<footer>
+    &copy; 2024 Astral Connect | Tous droits réservés | <a href="#" style="color: var(--primary-color); text-decoration: none;">Politique de confidentialité</a>
+</footer>
+
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeContactModal()">&times;</span>
+        <section class="contact-form">
+            <h2>Contactez-nous</h2>
+            <form id="contactForm">
+                <label>Votre nom:<input type="text" name="name" required></label>
+                <label>Votre email:<input type="email" name="email" required></label>
+                <label>Sujet:<input type="text" name="subject" required></label>
+                <label>Votre message:<textarea name="message" required></textarea></label>
+                <button type="submit">Envoyer</button>
+            </form>
+        </section>
+        <div id="messageConfirmation" style="display:none; color: green;">
+            Votre message a été envoyé avec succès!
+        </div>
+    </div>
+</div>
+
+<script>
+    function openContactModal() {
+        const contactModal = document.getElementById('contactModal');
+        contactModal.style.display = 'block';
+        setTimeout(function() {
+            contactModal.classList.add('display-block');
+        }, 50);
+    }
+
+    function closeContactModal() {
+        const contactModal = document.getElementById('contactModal');
+        contactModal.classList.remove('display-block');
+        setTimeout(function() {
+            contactModal.style.display = 'none';
+        }, 300);
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const form = document.getElementById('contactForm');
+        const formData = new FormData(form);
+
+        fetch('https://formspree.io/f/xleqagkd', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('messageConfirmation').style.display = 'block';
+                form.reset();
+            } else {
+                response.json().then(data => {
+                    throw new Error(data.error);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'envoi:', error);
+            alert('Erreur lors de l\'envoi du formulaire.');
+        });
+    });
+
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fadeInUp');
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+
+    document.querySelectorAll('.section').forEach(section => {
+        observer.observe(section);
+    });
+
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', function() {
+            const faq = this.parentElement;
+            const answer = faq.querySelector('.faq-answer');
+
+            if (faq.classList.contains('active')) {
+                faq.classList.remove('active');
+            } else {
+                document.querySelectorAll('.faq').forEach(faq => faq.classList.remove('active'));
+                faq.classList.add('active');
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

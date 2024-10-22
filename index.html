@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assistant Virtuel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+        :root {
+            --primary-color: #2596be;
+            --secondary-color: rgba(37, 150, 190, 0.5);
+            --background-color: rgba(0, 0, 0, 0.7);
+            --white: #ffffff;
+            --box-shadow: rgba(0, 0, 0, 0.3);
+            --font-family: 'Montserrat', sans-serif;
+            --border-radius: 10px;
+            --accent-color: #2596be;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-image: url("ressources/a.jpg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: var(--white);
+            font-family: var(--font-family);
+            box-sizing: border-box;
+            line-height: 1.6;
+            transition: all 0.3s ease-in-out;
+        }
+
+        nav {
+            background-color: var(--background-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s ease;
+        }
+
+        nav:hover {
+            background-color: rgba(0, 0, 0, 0.9);
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--white);
+            font-family: 'Poppins', sans-serif;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-logo i {
+            font-size: 28px;
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+
+        .nav-logo:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-center {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            margin-left: -205px;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            display: inline-block;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 15px 25px;
+            color: var(--white);
+            text-decoration: none;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--primary-color);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 50px 0;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 0 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 10px 20px var(--box-shadow);
+            width: 300px;
+            height: 400px;
+            text-align: center;
+            perspective: 1000px;
+            transition: transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px var(--box-shadow);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .card-front {
+            background-color: transparent;
+            transform: rotateY(0deg);
+        }
+
+        .card-back {
+            background-color: var(--secondary-color);
+            backdrop-filter: blur(10px);
+            color: var(--white);
+            transform: rotateY(180deg);
+            border-radius: var(--border-radius);
+        }
+
+        .card img {
+            width: 100%;
+            height: 50%;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card img:hover {
+            transform: scale(1.05);
+        }
+
+        .card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .card p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .welcome-banner {
+            background: rgba(37, 150, 190, 0.3);
+            backdrop-filter: blur(10px);
+            color: var(--white);
+            text-align: center;
+            padding: 80px 20px;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px var(--box-shadow);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .particles-container #particles-js {
+            width: 100%;
+            height: 100%;
+        }
+
+        .welcome-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: inherit;
+            z-index: -1;
+            filter: blur(20px);
+            transform: scale(1.1);
+        }
+
+        .welcome-banner .content {
+            width: 30%;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeIn 1.5s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 0.5s;
+            position: relative;
+            z-index: 2;
+        }
+
+        .welcome-banner h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            animation: slideInFromLeft 1.5s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-banner p {
+            font-size: 24px;
+            margin-bottom: 20px;
+            animation: slideInFromRight 1.5s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .welcome-banner .cta-btn {
+            display: inline-block;
+            background-color: rgba(37, 150, 190, 0.8);
+            backdrop-filter: blur(5px);
+            color: var(--white);
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+            animation: fadeIn 2s forwards cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            animation-delay: 1s;
+        }
+
+        .welcome-banner .cta-btn:hover {
+            background-color: rgba(27, 110, 142, 0.8);
+            transform: scale(1.05);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            transition: opacity 0.3s, visibility 0.3s;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .modal.display-block {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 25px;
+            border: none;
+            width: 80%;
+            max-width: 450px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            animation: zoomIn 0.5s;
+            color: #000;
+            text-align: center;
+            transition: opacity 0.3s, transform 0.3s;
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+
+        .modal.display-block .modal-content {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .close-btn {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #333;
+            cursor: pointer;
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 15px;
+            color: #666;
+            font-size: 18px;
+            max-width: 200px;
+            text-align: left;
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 425px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            transition: border-color 0.3s;
+            font-size: 16px;
+        }
+
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .contact-info i {
+            margin-right: 5px;
+            color: #ffcc00;
+        }
+
+        .contact-form h2 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s, transform 0.3s;
+        }
+
+        .contact-form h2:hover {
+            color: var(--white);
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+
+        .contact-form button {
+            width: 100%;
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: none;
+            padding: 12px 0;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 18px;
+            transition: background-color 0.3s;
+        }
+
+        .contact-form button:hover {
+            background-color: #1b6e8e;
+        }
+
+        footer {
+            background-color: var(--background-color);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            width: 100%;
+            box-shadow: 0 -2px 5px var(--box-shadow);
+        }
+
+        .center-text {
+            text-align: center;
+        }
+
+        .testimonial-slider {
+            position: relative;
+            height: 100px;
+            background-color: rgba(0, 0, 0, 0.2);
+            color: var(--white);
+            padding: 20px;
+            width: 100%;
+            border-radius: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 -2px 5px var(--box-shadow);
+            z-index: 50;
+            margin-bottom: 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .testimonial {
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 100%;
+            opacity: 0;
+            transition: all 1.5s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .testimonial.active {
+            left: 0;
+            opacity: 1;
+        }
+
+        .about-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: var(--white);
+            padding: 50px 20px;
+            border-radius: 15px;
+            margin: 50px 20px;
+            box-shadow: 0 4px 10px var(--box-shadow);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .about-section:hover {
+            transform: translateY(-10px);
+        }
+
+        .about-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-section p {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .about-section .cta-btn {
+            display: inline-block;
+            background-color: rgba(37, 150, 190, 0.8);
+            backdrop-filter: blur(5px);
+            color: var(--white);
+            padding: 15px 30px;
+            font-size: 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .about-section .cta-btn:hover {
+            background-color: rgba(27, 110, 142, 0.8);
+            transform: scale(1.05);
+        }
+
+        .expertise-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: var(--white);
+            padding: 50px 20px;
+            border-radius: 15px;
+            margin: 50px 20px;
+            box-shadow: 0 4px 10px var(--box-shadow);
+            text-align: center;
+            animation: fadeIn 1s ease-in-out;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .expertise-section:hover {
+            transform: translateY(-10px);
+        }
+
+        .expertise-section h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: slideInFromLeft 1s ease-in-out;
+        }
+
+        .expertise-section .expertise-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .expertise-section .expertise-card {
+            background: rgba(37, 150, 190, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px var(--box-shadow);
+            width: 300px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 1s ease-in-out forwards;
+        }
+
+        .expertise-section .expertise-card:nth-child(1) {
+            animation-delay: 0.3s;
+        }
+
+        .expertise-section .expertise-card:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .expertise-section .expertise-card:nth-child(3) {
+            animation-delay: 0.9s;
+        }
+
+        .expertise-section .expertise-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px var(--box-shadow);
+        }
+
+        .expertise-section .expertise-card i {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #0BFFD6;
+            animation: pulse 2s infinite;
+        }
+
+        .expertise-section .expertise-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .expertise-section .expertise-card p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInFromLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .card {
+                width: 45%;
+            }
+
+            .contact-form input[type="text"],
+            .contact-form input[type="email"],
+            .contact-form textarea {
+                width: calc(100% - 22px);
+            }
+
+            .welcome-banner .content {
+                width: 70%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .welcome-banner h2 {
+                font-size: 32px;
+            }
+
+            .welcome-banner p {
+                font-size: 18px;
+            }
+
+            .card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 90%;
+            }
+
+            .contact-form input[type="text"],
+            .contact-form input[type="email"],
+            .contact-form textarea {
+                width: calc(100% - 22px);
+            }
+
+            .welcome-banner .content {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="nav-logo">
+        <i class="fas fa-star"></i>
+        AstralConnect
+    </div>
+    <div class="nav-center">
+        <ul>
+            <li><a href="index.html"><i class="fas fa-home"></i> Accueil</a></li>
+            <li><a href="nos-offres.html"><i class="fas fa-box"></i> Nos Offres</a></li>
+            <li><a href="a-propos.html"><i class="fas fa-info-circle"></i> À propos</a></li>
+            <li><a href="#" onclick="openContactModal()"><i class="fas fa-envelope"></i> Contact</a></li>
+        </ul>
+    </div>
+</nav>
+
+<section class="welcome-banner">
+    <div class="particles-container">
+        <div id="particles-js"></div>
+    </div>
+    <div class="wave"></div>
+    <div class="content">
+        <h2>Bienvenue sur notre site!</h2>
+        <p>Découvrez nos services exceptionnels.</p>
+        <a href="nos-offres.html" class="cta-btn">Voir nos offres</a>
+    </div>
+</section>
+
+<div class="card-container">
+    <div class="card" onmouseenter="flipCard(this)" onmouseleave="unflipCard(this)">
+        <div class="card-inner">
+            <div class="card-front">
+                <img src="ressources/image1.jpg" alt="Service 1">
+                <h3>Gestion Administrative</h3>
+                <p>Un service efficace pour vous faciliter la vie.</p>
+            </div>
+            <div class="card-back">
+                <p>Une surcharge de travail ? Un pic d'activité ? Un retard important sur un service ? N'hésitez plus ce service est pour vous. Avec une grande rapidité et avec une adaptabilité à toute épreuve. Nous ferons notre maximum pour vous donner satisfaction.</p>
+            </div>
+        </div>
+    </div>
+    <div class="card" onmouseenter="flipCard(this)" onmouseleave="unflipCard(this)">
+        <div class="card-inner">
+            <div class="card-front">
+                <img src="ressources/image2.jpg" alt="Service 2">
+                <h3>Réseaux sociaux</h3>
+                <p>Vous n'avez pas le temps de mettre en avant votre activité ? </p>
+            </div>
+            <div class="card-back">
+                <p>Un service efficace ou on s'occupera de vos réseaux sociaux afin que votre entreprise soit reconnu.</p>
+            </div>
+        </div>
+    </div>
+    <div class="card" onmouseenter="flipCard(this)" onmouseleave="unflipCard(this)">
+        <div class="card-inner">
+            <div class="card-front">
+                <img src="ressources/image3.jpg" alt="Service 3">
+                <h3>Saisie de données</h3>
+                <p>Un grosse quantité de données à saisie dans un laps de temps défini ? </p>
+            </div>
+            <div class="card-back">
+                <p>Avec ce service n'ayez plus peur du retard impactant votre entreprise. Nous mettrons tout en oeuvre pour vous apporter un renfort et efficace et sur la durée.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="expertise-section">
+    <h2>Notre Savoir-Faire</h2>
+    <div class="expertise-cards">
+        <div class="expertise-card">
+            <i class="fas fa-briefcase"></i>
+            <h3>Expertise Professionnelle</h3>
+            <p>Nous fournissons des services professionnels de haute qualité adaptés aux besoins de nos clients.</p>
+        </div>
+        <div class="expertise-card">
+            <i class="fas fa-cogs"></i>
+            <h3>Innovation Technique</h3>
+            <p>Notre équipe utilise les dernières technologies pour garantir des solutions innovantes et efficaces.</p>
+        </div>
+        <div class="expertise-card">
+            <i class="fas fa-users"></i>
+            <h3>Service Client</h3>
+            <p>Nous mettons un point d'honneur à offrir un service client exceptionnel et personnalisé.</p>
+        </div>
+    </div>
+</section>
+
+<section class="about-section">
+    <h2>À propos de nous</h2>
+    <p>Nous sommes une équipe dédiée à fournir des solutions innovantes pour améliorer la productivité et l'efficacité de votre entreprise. Avec des années d'expérience et une passion pour l'excellence, nous nous engageons à offrir des services de haute qualité qui répondent à vos besoins uniques.</p>
+    <p>Nos services sont conçus pour aider les entreprises de toutes tailles à atteindre leurs objectifs et à prospérer dans un environnement de marché compétitif. Nous croyons en l'importance de l'innovation, de la qualité et de la satisfaction du client.</p>
+    <a href="a-propos.html" class="cta-btn">En savoir plus</a>
+</section>
+
+<div class="testimonial-slider">
+    <div class="testimonial active">
+        <p>"Ce service est incroyable! Il a vraiment aidé à améliorer notre productivité quotidienne."</p>
+        <h4>- Jean Dupont</h4>
+    </div>
+    <div class="testimonial">
+        <p>"J'étais sceptique au début, mais l'assistant virtuel a dépassé toutes mes attentes."</p>
+        <h4>- Marie Curie</h4>
+    </div>
+    <div class="testimonial">
+        <p>"Un outil indispensable pour toute entreprise cherchant à optimiser ses processus."</p>
+        <h4>- Ahmed El Kaderi</h4>
+    </div>
+</div>
+
+<div id="contactModal" class="modal">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeContactModal()">&times;</span>
+        <section class="contact-form">
+            <h2>Contactez-nous</h2>
+            <form id="contactForm">
+                <label>Votre nom:<input type="text" name="name" required></label>
+                <label>Votre email:<input type="email" name="email" required></label>
+                <label>Sujet:<input type="text" name="subject" required></label>
+                <label>Votre message:<textarea name="message" required></textarea></label>
+                <button id="sendButton" type="submit">Envoyer</button>
+            </form>
+        </section>
+        <div id="messageConfirmation" style="display:none; color: green;">
+            Votre message a été envoyé avec succès!
+        </div>
+    </div>
+</div>
+
+<footer>
+    &copy; 2024 Assistant Virtuel | Tous droits réservés | <a href="#" style="color: var(--primary-color); text-decoration: none;">Politique de confidentialité</a>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script>
+    function openContactModal() {
+        const contactModal = document.getElementById('contactModal');
+        contactModal.style.display = 'block';
+        setTimeout(function() {
+            contactModal.classList.add('display-block');
+        }, 50);
+    }
+
+    function closeContactModal() {
+        const contactModal = document.getElementById('contactModal');
+        contactModal.classList.remove('display-block');
+        setTimeout(function() {
+            contactModal.style.display = 'none';
+        }, 300);
+    }
+
+    function submitForm(event) {
+        event.preventDefault();
+        const form = document.getElementById('contactForm');
+        const formData = new FormData(form);
+
+        fetch('https://formspree.io/f/xleqagkd', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('messageConfirmation').style.display = 'block';
+                form.reset();
+            } else {
+                response.json().then(data => {
+                    throw new Error(data.error);
+                });
+            }
+        })
+        .catch(error => {
+            console.error('Erreur lors de l\'envoi:', error);
+            alert('Erreur lors de l\'envoi du formulaire.');
+        });
+    }
+
+    document.getElementById('contactForm').addEventListener('submit', submitForm);
+
+    function flipCard(card) {
+        card.querySelector('.card-inner').style.transform = 'rotateY(180deg)';
+    }
+
+    function unflipCard(card) {
+        card.querySelector('.card-inner').style.transform = 'rotateY(0deg)';
+    }
+
+    let currentTestimonialIndex = 0;
+    const testimonials = document.querySelectorAll('.testimonial');
+
+    function cycleTestimonials() {
+        testimonials[currentTestimonialIndex].classList.remove('active');
+        currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
+        testimonials[currentTestimonialIndex].classList.add('active');
+    }
+
+    setInterval(cycleTestimonials, 3000);
+
+    particlesJS("particles-js", {
+        "particles": {
+            "number": {
+                "value": 150,
+                "density": {
+                    "enable": true,
+                    "value_area": 800
+                }
+            },
+            "color": {
+                "value": "#ffffff"
+            },
+            "shape": {
+                "type": "circle",
+                "stroke": {
+                    "width": 0,
+                    "color": "#000000"
+                },
+                "polygon": {
+                    "nb_sides": 5
+                },
+                "image": {
+                    "src": "img/github.svg",
+                    "width": 100,
+                    "height": 100
+                }
+            },
+            "opacity": {
+                "value": 0.5,
+                "random": false,
+                "anim": {
+                    "enable": false,
+                    "speed": 1,
+                    "opacity_min": 0.1,
+                    "sync": false
+                }
+            },
+            "size": {
+                "value": 3,
+                "random": true,
+                "anim": {
+                    "enable": false,
+                    "speed": 40,
+                    "size_min": 0.1,
+                    "sync": false
+                }
+            },
+            "line_linked": {
+                "enable": true,
+                "distance": 150,
+                "color": "#ffffff",
+                "opacity": 0.4,
+                "width": 1
+            },
+            "move": {
+                "enable": true,
+                "speed": 6,
+                "direction": "none",
+                "random": false,
+                "straight": false,
+                "out_mode": "out",
+                "bounce": false,
+                "attract": {
+                    "enable": false,
+                    "rotateX": 600,
+                    "rotateY": 1200
+                }
+            }
+        },
+        "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+                "onhover": {
+                    "enable": true,
+                    "mode": "repulse"
+                },
+                "onclick": {
+                    "enable": true,
+                    "mode": "push"
+                },
+                "resize": true
+            },
+            "modes": {
+                "grab": {
+                    "distance": 400,
+                    "line_linked": {
+                        "opacity": 1
+                    }
+                },
+                "bubble": {
+                    "distance": 400,
+                    "size": 40,
+                    "duration": 2,
+                    "opacity": 8,
+                    "speed": 3
+                },
+                "repulse": {
+                    "distance": 200,
+                    "duration": 0.4
+                },
+                "push": {
+                    "particles_nb": 4
+                },
+                "remove": {
+                    "particles_nb": 2
+                }
+            }
+        },
+        "retina_detect": true
+    });
+</script>
+</body>
+</html>
